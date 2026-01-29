@@ -12,16 +12,66 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'surprise-clock'`, () => {
+  it('should have showSurprise and currentDateTime properties', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('surprise-clock');
+    expect(app.showSurprise).toBeDefined();
+    expect(app.currentDateTime).toBeDefined();
+  });
+
+  it('should show surprise text when onSurpriseClick is called', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    expect(app.showSurprise).toBe(false);
+    app.onSurpriseClick();
+    expect(app.showSurprise).toBe(true);
+  });
+
+  it('should set currentDateTime when onShowDateTime is called', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    expect(app.currentDateTime).toBe('');
+    app.onShowDateTime();
+    expect(app.currentDateTime).not.toBe('');
+    const currentYear = new Date().getFullYear().toString();
+    expect(app.currentDateTime).toContain(currentYear);
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('surprise-clock app is running!');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Surprise Clock');
+  });
+
+  it('should render two buttons', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    const buttons = compiled.querySelectorAll('button');
+    expect(buttons.length).toBe(2);
+  });
+
+  it('should display surprise text when button is clicked', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    const surpriseButton = compiled.querySelector('.surprise-btn') as HTMLButtonElement;
+    surpriseButton.click();
+    fixture.detectChanges();
+    expect(compiled.querySelector('.surprise-text')?.textContent).toContain('SURPRISE!');
+  });
+
+  it('should display datetime text when datetime button is clicked', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    const datetimeButton = compiled.querySelector('.datetime-btn') as HTMLButtonElement;
+    datetimeButton.click();
+    fixture.detectChanges();
+    const datetimeText = compiled.querySelector('.datetime-text')?.textContent;
+    expect(datetimeText).toBeTruthy();
+    const currentYear = new Date().getFullYear().toString();
+    expect(datetimeText).toContain(currentYear);
   });
 });
