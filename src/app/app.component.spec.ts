@@ -33,7 +33,8 @@ describe('AppComponent', () => {
     expect(app.currentDateTime).toBe('');
     app.onShowDateTime();
     expect(app.currentDateTime).not.toBe('');
-    expect(app.currentDateTime).toContain('2026');
+    const currentYear = new Date().getFullYear().toString();
+    expect(app.currentDateTime).toContain(currentYear);
   });
 
   it('should render title', () => {
@@ -59,5 +60,18 @@ describe('AppComponent', () => {
     surpriseButton.click();
     fixture.detectChanges();
     expect(compiled.querySelector('.surprise-text')?.textContent).toContain('SURPRISE!');
+  });
+
+  it('should display datetime text when datetime button is clicked', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    const datetimeButton = compiled.querySelector('.datetime-btn') as HTMLButtonElement;
+    datetimeButton.click();
+    fixture.detectChanges();
+    const datetimeText = compiled.querySelector('.datetime-text')?.textContent;
+    expect(datetimeText).toBeTruthy();
+    const currentYear = new Date().getFullYear().toString();
+    expect(datetimeText).toContain(currentYear);
   });
 });
