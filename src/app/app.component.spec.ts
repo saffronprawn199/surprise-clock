@@ -1,7 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { DebugElement } from '@angular/core';
-import { By } from '@angular/platform-browser';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -45,7 +43,8 @@ describe('AppComponent', () => {
     fixture.detectChanges();
     
     const compiled = fixture.nativeElement as HTMLElement;
-    const resourcesHeading = compiled.querySelector('h2');
+    const resourcesHeading = Array.from(compiled.querySelectorAll('h2'))
+      .find(h2 => h2.textContent?.includes('Resources'));
     
     expect(resourcesHeading).toBeTruthy();
     expect(resourcesHeading?.textContent).toContain('Resources');
@@ -55,8 +54,8 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
 
-    const el: HTMLElement = fixture.nativeElement;
-    const link = el.querySelector<HTMLAnchorElement>('a.card[href="https://angular.io/tutorial"]');
+    const compiled = fixture.nativeElement as HTMLElement;
+    const link = compiled.querySelector<HTMLAnchorElement>('a.card[href="https://angular.io/tutorial"]');
     
     expect(link).toBeTruthy();
     expect(link?.textContent).toContain('Learn Angular');
